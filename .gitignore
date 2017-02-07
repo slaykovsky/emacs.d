@@ -1,0 +1,11 @@
+auto-save-list
+backups
+elpa
+*.last
+*.eld
+*.elc
+recentf
+session*
+snippets
+.cask
+.smex-items
