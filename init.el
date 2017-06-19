@@ -96,8 +96,12 @@ UNUSED is unused though."
 ;; Golang
 (defvar local-gopath (concat (getenv "HOME") "/Documents/go"))
 (setenv "GOPATH" local-gopath)
-(add-to-list 'exec-path (concat local-gopath "/bin"))
-(add-to-list 'load-path (concat local-gopath "/src/github.com/dougm/goflymake"))
+(add-to-list 'exec-path
+	     (concat local-gopath "/bin"))
+(add-to-list 'load-path
+	     (concat local-gopath "/src/github.com/dougm/goflymake"))
+(add-to-list 'load-path
+	     (concat local-gopath "/src/github.com/dougm/goflymake"))
 (require 'go-flymake)
 (require 'go-flycheck)
 
@@ -108,9 +112,20 @@ UNUSED is unused though."
   (if (not (string-match "go" compile-command))
       (set (make-local-variable 'compile-command)
 	   "go build -v && go test -v && go vet"))
+  (go-guru-hl-identifier-mode)
+  
   (local-set-key (kbd "M-.") 'godef-jump)
-  (local-set-key (kbd "M-,") 'pop-tag-mark))
+  (local-set-key (kbd "M-,") 'pop-tag-mark)
+  (local-set-key (kbd "M-p") 'compile)
+  (local-set-key (kbd "M-P") 'recompile)
+  (local-set-key (kbd "M-]") 'next-error)
+  (local-set-key (kbd "M-[") 'previous-error)
+
+  (auto-complete-mode 1))
 (add-hook 'go-mode-hook 'my-go-mode-hook)
+(with-eval-after-load 'go-mode
+  (require 'go-autocomplete))
+(require 'go-guru)
 
 ;; Editing :)
 (require 'uniquify)

@@ -43,6 +43,8 @@
 (depends-on "enh-ruby-mode")
 ;; Yes I do write Go and kinda like it :)
 (depends-on "go-mode")
+(depends-on "go-autocomplete")
+(depends-on "go-guru")
 (depends-on "flymake-go")
 (depends-on "auto-complete")
 ;; Show me the bounds!
