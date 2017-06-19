@@ -9,3 +9,6 @@ session*
 snippets
 .cask
 .smex-items
+*.old
+eshell
+gmon.out
