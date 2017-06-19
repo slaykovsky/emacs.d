@@ -12,3 +12,4 @@ snippets
 *.old
 eshell
 gmon.out
+ac-comphist.dat
