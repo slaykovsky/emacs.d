@@ -26,11 +26,6 @@
 (depends-on "web-mode")
 (depends-on "yasnippet")
 (depends-on "paredit")
-;; Clojure cookies :)
-(depends-on "clojure-mode")
-(depends-on "clojure-mode-extra-font-locking")
-;; This one integrates well with Clojure REPL.
-(depends-on "cider")
 ;; Make ido great again!
 (depends-on "ido-ubiquitous")
 ;; Friendship is magic!
@@ -48,5 +43,7 @@
 (depends-on "enh-ruby-mode")
 ;; Yes I do write Go and kinda like it :)
 (depends-on "go-mode")
+(depends-on "flymake-go")
+(depends-on "auto-complete")
 ;; Show me the bounds!
 (depends-on "fill-column-indicator")
