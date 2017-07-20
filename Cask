@@ -26,6 +26,8 @@
 (depends-on "web-mode")
 (depends-on "yasnippet")
 (depends-on "paredit")
+(depends-on "rust-mode")
+(depends-on "yaml-mode")
 ;; Make ido great again!
 (depends-on "ido-ubiquitous")
 ;; Friendship is magic!
@@ -34,11 +36,10 @@
 (depends-on "tagedit")
 ;; I do write Python yet.
 (depends-on "elpy")
-;; Lovely lovely 3024
-(depends-on "base16-theme")
-(depends-on "solarized-theme")
+(depends-on "python-mode")
 ;; Docker docker docker file!
 (depends-on "dockerfile-mode")
+(depends-on "vagrant")
 ;; I even write Ruby!
 (depends-on "enh-ruby-mode")
 ;; Yes I do write Go and kinda like it :)
@@ -49,3 +50,9 @@
 (depends-on "auto-complete")
 ;; Show me the bounds!
 (depends-on "fill-column-indicator")
+;; C/C++ stuff
+(depends-on "rtags")
+(depends-on "helm")
+(depends-on "auto-complete-clang-async")
+(depends-on "groovy-mode")
+(depends-on "gruvbox-theme")

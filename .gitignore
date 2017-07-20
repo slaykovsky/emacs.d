@@ -4,7 +4,7 @@ elpa
 *.last
 *.eld
 *.elc
-recentf
+.recentf
 session*
 snippets
 .cask
@@ -13,3 +13,6 @@ snippets
 eshell
 gmon.out
 ac-comphist.dat
+.emacs.desktop
+.emacs.desktop.lock
+network-security.data
