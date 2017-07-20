@@ -17,7 +17,6 @@
 (defvar save-place-file)
 (defvar smex-save-file)
 
-
 (setq display-line-numbers 't)
 
 (define-globalized-minor-mode global-rainbow-delimiters-mode
@@ -45,7 +44,6 @@
 	scroll-step 1
 	scroll-conservatively 10000
 	scroll-preserve-screen-position 1)
-
 
   ;;; UI related stuff
   (load-theme 'gruvbox t)
