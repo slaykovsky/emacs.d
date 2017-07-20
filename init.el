@@ -91,6 +91,11 @@
   (elpy-enable)
   (setq elpy-rpc-backend "jedi")
   (setq elpy-rpc-large-buffer-size 999999999999)
+
+  ;;; Haskell related stuff
+  (autoload 'ghc-init "ghc" nil 't)
+  (autoload 'ghc-debug "ghc" nil 't)
+  (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
   
   ;; Golang
   (defvar local-gopath (concat (getenv "HOME") "/Documents/go"))
