@@ -53,6 +53,11 @@ package-archive-priorities '(("melpa-stable" . 1)))
 (use-package expand-region)
 (use-package markdown-mode+)
 (use-package org)
+(use-package cider)
+(use-package clojure-mode)
+(use-package smartparens)
+(use-package rainbow-delimiters)
+(use-package aggressive-indent)
 
 ;;; global vars
 (setq
@@ -78,7 +83,8 @@ package-archive-priorities '(("melpa-stable" . 1)))
  c-basic-offset 4)
 
 ;;; modes
-(global-display-line-numbers-mode)
+(when (> emacs-major-version 25)
+  (global-display-line-numbers-mode))
 (remove-hook 'find-file-hooks 'vc-find-file-hook)
 (electric-indent-mode 0)
 (global-hl-line-mode t)
@@ -113,7 +119,6 @@ package-archive-priorities '(("melpa-stable" . 1)))
 
 ;;; UI related stuff
 (load-theme 'gruvbox t)
-(set-frame-font "Hack 9")
 
 ;;; Python
 (elpy-enable)
@@ -147,6 +152,12 @@ package-archive-priorities '(("melpa-stable" . 1)))
 ;; Misc
 (fset 'yes-or-no-p 'y-or-n-p)
 (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
+
+;; Clojure
+(add-hook 'clojure-mode-hook #'subword-mode)
+(add-hook 'clojure-mode-hook #'smartparens-strict-mode)
+(add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
+(add-hook 'clojure-mode-hook #'agressive-ident-mode)
 
 ;;; Custom VERY useful functions ^_^
 (defun duplicate-current-line-or-region (arg)
