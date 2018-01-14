@@ -14,50 +14,29 @@
 package-archive-priorities '(("melpa-stable" . 1)))
 
 (package-initialize)
-(when (not package-archive-contents)
+
+(defvar prelude-packages
+  '(solarized-theme bind-key dash company flycheck intero
+                    magit web-mode yaml-mode elpy python-mode
+                    counsel ivy idris-mode haskell-mode dockerfile-mode
+                    vagrant popwin s f expand-region markdown-mode+
+                    org smartparens rainbow-delimiters aggressive-indent)
+  "List of packages.")
+
+(defun prelude-packages-installed-p ()
+  (cl-loop for p in prelude-packages
+        when (not (package-installed-p p)) do (cl-return nil)
+        finally (cl-return t)))
+
+(unless (prelude-packages-installed-p)
+  (message "%s" "Emacs is now refreshing its package database...")
   (package-refresh-contents)
-  (package-install 'use-package))
+  (message "%s" " done.")
+  (dolist (p prelude-packages)
+    (when (not (package-installed-p p))
+      (package-install p))))
 
-(require 'use-package)
-
-(use-package gruvbox-theme)
-(use-package bind-key)
-(use-package dash)
-(use-package company)
-(use-package flycheck)
-(use-package magit)
-(use-package web-mode)
-(use-package yaml-mode)
-(use-package elpy)
-(use-package python-mode)
-(use-package counsel)
-(use-package ivy)
-(use-package idris-mode)
-(use-package haskell-mode)
-(use-package ensime)
-(use-package scala-mode
-  :interpreter
-  ("scala" . scala-mode))
-(use-package sbt-mode
-  :commands sbt-start sbt-command
-  :config
-  (substitute-key-definition
-   'minibuffer-complete-word
-   'self-insert-command
-   minibuffer-local-completion-map))
-(use-package dockerfile-mode)
-(use-package vagrant)
-(use-package popwin)
-(use-package s)
-(use-package f)
-(use-package expand-region)
-(use-package markdown-mode+)
-(use-package org)
-(use-package cider)
-(use-package clojure-mode)
-(use-package smartparens)
-(use-package rainbow-delimiters)
-(use-package aggressive-indent)
+(require 'smartparens-config)
 
 ;;; global vars
 (setq
@@ -118,13 +97,14 @@ package-archive-priorities '(("melpa-stable" . 1)))
 (global-set-key (kbd "C-#") 'comment-or-uncomment-region)
 
 ;;; UI related stuff
-(load-theme 'gruvbox t)
+(load-theme 'solarized-dark t)
 
 ;;; Python
 (elpy-enable)
 (setq
  elpy-rpc-backend "jedi"
  elpy-rpc-large-buffer-size most-positive-fixnum)
+(add-hook 'python-mode-hook #'smartparens-mode)
 
 ;;; Haskell
 (add-hook 'haskell-mode-hook
@@ -135,29 +115,46 @@ package-archive-priorities '(("melpa-stable" . 1)))
 
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
 (add-hook 'haskell-mode-hook 'flyspell-prog-mode)
+(add-hook 'haskell-mode-hook 'intero-mode)
 
 ;;; Idris
 (setq idris-interpreter-path "/home/aslaikov/.cabal/bin/idris")
-
-;;; Scala
-(setq
- scala-indent:default-run-on-strategy "eager"
- scala-indent:indent-value-expression t
- scala-indent:align-parameters t
- scala-indent:align-forms t
- prettify-symbols-alist scala-prettify-symbols-alist
- ensime-startup-notification nil)
-(prettify-symbols-mode)
 
 ;; Misc
 (fset 'yes-or-no-p 'y-or-n-p)
 (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
 
-;; Clojure
-(add-hook 'clojure-mode-hook #'subword-mode)
-(add-hook 'clojure-mode-hook #'smartparens-strict-mode)
-(add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
-(add-hook 'clojure-mode-hook #'agressive-ident-mode)
+;; Lisps
+
+(defvar lisp-modes "clojure emacs-lisp cider-repl")
+
+(defun standard-lisp-environment ()
+  "A collection of modes to be enabled for a LISP."
+  (subword-mode 1)
+  (smartparens-mode 1)
+  (rainbow-delimiters-mode 1)
+  (aggressive-indent-mode 1)
+  (eldoc-mode 1))
+
+(defun append-suffix (suffix phrases)
+  "Take SUFFIX and append it to each of the PHRASES."
+  (mapcar #'(lambda (phrase) (concat phrase suffix)) phrases))
+
+(defun multiple-mode-add-hook (modes hook)
+  "Given a list of x-mode-hook symbols in MODES, add the HOOK to them."
+  (mapc (lambda (mode) (add-hook mode hook)) modes))
+
+(defun symbols-from-strings (strings)
+  "Given a list of STRINGS, get their symbol values."
+  (mapcar #'intern strings))
+
+(defun hook-up-modes (string hook)
+  "Using mode string STRING add a hook HOOK to it."
+  (let ((modes (symbols-from-strings
+                (append-suffix "-mode-hook" (split-string string)))))
+    (multiple-mode-add-hook modes hook)))
+
+(hook-up-modes lisp-modes 'standard-lisp-environment)
 
 ;;; Custom VERY useful functions ^_^
 (defun duplicate-current-line-or-region (arg)
