@@ -11,16 +11,16 @@
                     ("melpa" . "http://melpa.org/packages/")
                     ("melpa-stable" . "http://stable.melpa.org/packages/"))
 
-package-archive-priorities '(("melpa-stable" . 1)))
+ package-archive-priorities '(("melpa-stable" . 1)))
 
 (package-initialize)
 
 (defvar prelude-packages
-  '(solarized-theme bind-key dash company flycheck intero
-                    magit web-mode yaml-mode elpy python-mode
-                    counsel ivy idris-mode haskell-mode dockerfile-mode
-                    vagrant popwin s f expand-region markdown-mode+
-                    org smartparens rainbow-delimiters aggressive-indent)
+  '(base16-theme bind-key dash company flycheck intero projectile hindent
+                 magit web-mode yaml-mode elpy python-mode counsel-projectile
+                 counsel ivy idris-mode haskell-mode dockerfile-mode bbdb
+                 popwin s f expand-region markdown-mode+ enh-ruby-mode
+                 org smartparens rainbow-delimiters aggressive-indent)
   "List of packages.")
 
 (defun prelude-packages-installed-p ()
@@ -76,6 +76,7 @@ package-archive-priorities '(("melpa-stable" . 1)))
 (global-visual-line-mode 't)
 (global-flycheck-mode 't)
 (ivy-mode t)
+(desktop-save-mode 1)
 (setq
  ivy-use-virtual-buffers t)
 (global-auto-revert-mode 1)
@@ -97,12 +98,14 @@ package-archive-priorities '(("melpa-stable" . 1)))
 (global-set-key (kbd "C-#") 'comment-or-uncomment-region)
 
 ;;; UI related stuff
-(load-theme 'solarized-dark t)
+(load-theme 'base16-gruvbox-dark-soft t)
+(set-frame-font "InputMonoCondensed Medium 10")
 
 ;;; Python
 (elpy-enable)
 (setq
  elpy-rpc-backend "jedi"
+ elpy-rpc-python-command "python3"
  elpy-rpc-large-buffer-size most-positive-fixnum)
 (add-hook 'python-mode-hook #'smartparens-mode)
 
@@ -116,6 +119,8 @@ package-archive-priorities '(("melpa-stable" . 1)))
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
 (add-hook 'haskell-mode-hook 'flyspell-prog-mode)
 (add-hook 'haskell-mode-hook 'intero-mode)
+(require 'hindent)
+(add-hook 'haskell-mode-hook #'hindent-mode)
 
 ;;; Idris
 (setq idris-interpreter-path "/home/aslaikov/.cabal/bin/idris")
@@ -123,6 +128,7 @@ package-archive-priorities '(("melpa-stable" . 1)))
 ;; Misc
 (fset 'yes-or-no-p 'y-or-n-p)
 (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
+(add-to-list 'auto-mode-alist '("Vagrantfile\\'" . enh-ruby-mode))
 
 ;; Lisps
 
