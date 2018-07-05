@@ -275,5 +275,7 @@ will be duplicated"
          :port 6667
          :nick "LeakyReLU")))
 
+(server-start)
+
 (provide 'init)
 ;;; init.el ends here
