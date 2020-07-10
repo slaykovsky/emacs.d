@@ -41,18 +41,18 @@
  package-archive-priorities '(("melpa-stable" . 1)))
 
 (package-initialize)
-(when (not package-archive-contents)
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
   (package-install 'use-package))
-
-(package-refresh-contents)
 
 (eval-when-compile
   (require 'use-package))
 (setq  use-package-always-ensure t)
 
 (require 'bind-key)
-(require 'diminish)
 
+
+(use-package diminish)
 (use-package erc)
 (use-package quick-peek)
 (use-package magit
@@ -99,6 +99,7 @@
   :init (global-flycheck-mode))
 (use-package base16-theme)
 
+(require 'diminish)
 (require 'smartparens-config)
 
 ;;; modes
@@ -139,7 +140,7 @@
 
 ;;; UI related stuff
 (load-theme 'base16-3024 t)
-(set-frame-font "Iosevka 14")
+(set-frame-font "JetBrains Mono 14")
 
 ;; Misc
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -235,47 +236,6 @@ will be duplicated"
   (comment-or-uncomment-region
    (line-beginning-position)
    (line-end-position)))
-
-;;; ERC
-(require 'erc)
-(require 'erc-log)
-
-(load "~/.ercpass")
-(require 'erc-services)
-(setq erc-nickserv-identify-mode 'autodetect)
-(erc-services-mode 1)
-(setq erc-prompt-for-nickserv-password nil)
-(setq erc-nickserv-passwords
-      '((freenode (("slaykovsky" . freenode-pass)))))
-
-(require 'erc-join)
-
-(require 'erc-desktop-notifications)
-(require 'erc-button)
-(setq
- erc-autojoin-channels-alist '(("freenode.net" "#lor"))
- erc-autojoin-timing 'ident
- erc-notifications-bus :session
- erc-notifications-mode t
- erc-email-userid "alexey@slaykovsky.com")
-(erc-autojoin-mode t)
-
-(require 'erc-track)
-(erc-track-mode t)
-(setq erc-track-exclude-types
-      '("JOIN" "NICK" "PART" "QUIT" "MODE"
-        "324" "329" "332" "333" "353" "477"))
-
-(defun erc-start-or-switch ()
-  "Start ERC or switch to the last active one."
-  (interactive)
-  (if (get-buffer "chat.freenode.net:6667")
-      (erc-track-switch-buffer 1)
-    (erc :server "chat.freenode.net"
-         :port 6667
-         :nick "LeakyReLU")))
-
-(server-start)
 
 (provide 'init)
 ;;; init.el ends here
